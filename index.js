@@ -6,14 +6,35 @@ const messages = document.querySelector(".messages")
 let choice = ""
 let doingSomething = ""
 
+function shuffle(array) {
+    let counter = array.length;
+    // While there are elements in the array
+    while (counter > 0) {
+        // Pick a random index
+        let index = Math.floor(Math.random() * counter);
 
+        // Decrease i by 1
+        counter--;
+
+        // And swap the last element with it
+        let temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
+
+    return array;
+}
 
 let symbols = ["sky", "heart", "star", "cloud", "moon", "heart", "sky", "moon", "star", "cloud"]
-symbols.forEach(function(sym){
-  tiles.innerHTML += `<span class="cards ${sym}" data-id="${sym}"><span class="card-text" style="opacity: 1">${sym}</span></span>`
-})
+
 
 document.addEventListener("DOMContentLoaded", function (e){
+  let shuffled = shuffle(symbols)
+  //shuffle array
+  shuffled.forEach(function(sym){
+    tiles.innerHTML += `<span class="cards ${sym}" data-id="${sym}"><span class="card-text" style="opacity: 1">${sym}</span></span>`
+  })
+  //slap it on the DOM
   const cardText = document.querySelectorAll(".card-text")
   doingSomething = "yes"
   messages.innerHTML = "Pay Attention!!"
