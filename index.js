@@ -5,6 +5,7 @@ const messages = document.querySelector(".messages")
 
 let choice = ""
 let doingSomething = ""
+let user = ""
 
 function shuffle(array) {
     let counter = array.length;
@@ -27,34 +28,42 @@ function shuffle(array) {
 
 let symbols = ["sky", "heart", "star", "cloud", "moon", "heart", "sky", "moon", "star", "cloud"]
 
-
-document.addEventListener("DOMContentLoaded", function (e){
+function setUpCards(array){
   let shuffled = shuffle(symbols)
+  tiles.innerHTML = ""
   //shuffle array
   shuffled.forEach(function(sym){
     tiles.innerHTML += `<span class="cards ${sym}" data-id="${sym}"><span class="card-text" style="opacity: 1">${sym}</span></span>`
   })
   //slap it on the DOM
+}
+
+// document.addEventListener("DOMContentLoaded", function(e){
+//
+// })
+
+function refreshGame() {
   const cardText = document.querySelectorAll(".card-text")
+
   doingSomething = "yes"
-  messages.innerHTML = "Pay Attention!!"
+  messages.innerHTML = `${user}! Pay Attention!!`
   let i = 0
   const double = (2 * cardText.length) - 1
   cardText.forEach(function(card){
     var fadeEffect = setInterval(function () {
       if (!card.style.opacity) {
-          card.style.opacity = 1;
-          console.log(1)
+        card.style.opacity = 1;
+        console.log(1)
       } else if (i > double) {
         card.style.opacity = 0
-// TODO: make the text white instead of transluscent
+        // TODO: make the text white instead of transluscent
         clearInterval(fadeEffect)
         console.log(3)
         doingSomething = ""
         messages.innerHTML = ""
       } else if (card.style.opacity > 0) {
-          card.style.opacity -= 0.01;
-          console.log(2)
+        card.style.opacity -= 0.01;
+        console.log(2)
       } else if (card.style.opacity == 0) {
         card.style.opacity = 1;
         i++
@@ -63,10 +72,29 @@ document.addEventListener("DOMContentLoaded", function (e){
         clearInterval(fadeEffect);
       }
     }, 10);
-  //when user clicks the card we remove it
+    //when user clicks the card we remove it
   })//end of opacity Fn
 
-})//end of DOMContentLoaded
+}
+
+document.addEventListener("click", function (e){
+  e.preventDefault()
+  if (e.target.innerText === "Redo!"){
+    setUpCards(symbols);
+    refreshGame()
+  }
+})
+
+document.addEventListener("click", function (e){
+  e.preventDefault();
+  if (e.target.nodeName === "BUTTON"){
+    user = e.target.previousElementSibling.firstElementChild.value
+    e.target.parentElement.innerHTML = `<button type="reset">Redo!</button>`
+    setUpCards(symbols);
+    refreshGame()
+  }
+})
+
 
 
   //prevents clicking while
