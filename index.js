@@ -3,7 +3,7 @@ const tiles = document.getElementById("tile-container")
 const cardText = document.querySelectorAll(".card-text")
 const gameContent = document.querySelector(".memory-game")
 const messages = document.querySelector(".messages")
-const stopClock = document.getElementById("clock")
+const stopClock = document.getElementById("stop-clock")
 const timerHeader = document.querySelector("h2")
 
 //variables
