@@ -8,6 +8,8 @@ const messages = document.querySelector(".messages")
 let choice = ""
 let doingSomething = ""
 let user = ""
+let cards = 0
+let completedCards = 0
 
 //shuffling function, called on an array, or a fetch
 function shuffle(array) {
@@ -35,6 +37,7 @@ let symbols = ["sky", "heart", "star", "cloud", "moon", "heart", "sky", "moon", 
 //executes the shuffle function on the collected array, resets the tiles HTML, and iterates over the new array and slaps it on the DOM
 function setUpCards(array){
   let shuffled = shuffle(symbols)
+  cards = (shuffled.length) / 2
   tiles.innerHTML = ""
   //shuffle array
   shuffled.forEach(function(sym){
@@ -152,6 +155,11 @@ document.addEventListener("click", function (e){
           })
           // Reset the choice for later clicks
           choice = ""
+
+          ++completedCards
+          if (cards === completedCards) {
+            messages.innerHTML = `${user}! You win!`
+          }
 
           // More often that not, this is the options chosen
           // This is if the 2nd clicked card does NOT match the 1st clicked card
