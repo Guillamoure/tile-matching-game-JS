@@ -1,11 +1,13 @@
 const tiles = document.getElementById("tile-container")
 const cardText = document.querySelectorAll(".card-text")
+const gameContent = document.querySelector(".memory-game")
+const messages = document.querySelector(".messages")
 
 let choice = ""
 
 
 
-let symbols = ["heart", "star", "moon", "heart", "moon", "star"]
+let symbols = ["sky", "heart", "star", "cloud", "moon", "heart", "sky", "moon", "star", "cloud"]
 symbols.forEach(function(sym){
   tiles.innerHTML += `<span class="cards ${sym}" data-id="${sym}"><span class="card-text" style="opacity: 1">${sym}</span></span>`
 })
@@ -49,7 +51,8 @@ document.addEventListener("DOMContentLoaded", function (e){
 })//end of DOMContentLoaded
 
 document.addEventListener("click", function(e){
-  if (e.target.nodeName === "SPAN"){
+
+  if ((e.target.nodeName === "SPAN") && (e.target.firstElementChild.style.opacity !== "1")){
     if (choice === ""){
 
       choice = e.target.dataset.id
@@ -65,6 +68,7 @@ document.addEventListener("click", function(e){
 
       e.target.firstElementChild.style.opacity = 1
       const wrong = document.getElementsByClassName(choice)
+      messages.innerHTML = "These do not match"
       // alert("These don't match!")
 
 
@@ -74,6 +78,7 @@ document.addEventListener("click", function(e){
         Array.from(wrong).forEach(function(choice){
           choice.firstElementChild.style.opacity  = 0
         })
+        messages.innerHTML = ""
 
       },1000);
     }

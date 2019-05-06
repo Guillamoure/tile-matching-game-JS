@@ -7,10 +7,13 @@
 .cards {
   border-style: solid;
   border-color: blue;
-  margin: 5px;
-  margin-top: 20px;
-  padding: 100px 50px;
-  bottom: 2em;
+  width: 20%;
+  height: 10em;
+  margin: 1em;
+  text-align: center;
+  padding-top: 4.5em;
+  /* padding: 100px 50px;
+  bottom: 2em; */
 }
 
 body {
@@ -19,4 +22,13 @@ body {
   font-family: sans-serif;
   height: 100vh;
 
+}
+
+#tile-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.messages {
+  text-align: center;
 }
