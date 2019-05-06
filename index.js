@@ -3,6 +3,8 @@ const tiles = document.getElementById("tile-container")
 const cardText = document.querySelectorAll(".card-text")
 const gameContent = document.querySelector(".memory-game")
 const messages = document.querySelector(".messages")
+const stopClock = document.getElementById("clock")
+const timerHeader = document.querySelector("h2")
 
 //variables
 let choice = ""
@@ -10,6 +12,39 @@ let doingSomething = ""
 let user = ""
 let cards = 0
 let completedCards = 0
+let newRecord = ""
+
+let centiseconds = 0
+let seconds = 0
+let minutes = 0
+let hours = 0
+let t = 0
+
+function addTime() {
+  centiseconds++;
+  if (centiseconds >= 100) {
+    centiseconds = 0;
+    seconds++;
+    if (seconds >= 60){
+      debugger
+      seconds = 0;
+      minutes++;
+      if (minutes >= 60){
+        minutes = 0;
+        hours++
+      }
+    }
+  }
+  stopClock.innerText = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds) + "." + (centiseconds > 9 ? centiseconds : "0" + centiseconds);
+
+  timer()
+}
+
+function timer() {
+
+  t = setTimeout(addTime, 100)
+}
+
 
 //shuffling function, called on an array, or a fetch
 function shuffle(array) {
@@ -32,7 +67,7 @@ function shuffle(array) {
 }
 
 //sample array for testing
-let symbols = ["sky", "heart", "star", "cloud", "moon", "heart", "sky", "moon", "star", "cloud"]
+let symbols = ["Heart", "Heart", "Jupiter", "Jupiter", "Io", "Io", "Klaus", "Klaus", "Sunshine", "Sunshine", "Rocket", "Rocket"]
 
 //executes the shuffle function on the collected array, resets the tiles HTML, and iterates over the new array and slaps it on the DOM
 function setUpCards(array){
@@ -84,6 +119,17 @@ function refreshGame() {
         // Resets the doingSomething variable, so click events can occur
         doingSomething = ""
         messages.innerHTML = ""
+        timerHeader.style.opacity = 1
+
+        completedCards = 0
+        newRecord = ""
+
+        centiseconds = 0
+        seconds = 0
+        minutes = 0
+        hours = 0
+        t = 0
+        timer()
         // Decays the opacity of the cards by 1/100th every iteration
       } else if (card.style.opacity > 0) {
         card.style.opacity -= 0.01;
@@ -108,6 +154,8 @@ function refreshGame() {
 document.addEventListener("click", function (e){
   e.preventDefault()
   if (e.target.innerText === "Redo!"){
+
+    stopClock.innerHTML = ``
     setUpCards(symbols);
     refreshGame()
   }
@@ -118,11 +166,13 @@ document.addEventListener("click", function (e){
 // TODO Both this function and the above funtion runs concurrently. Must specify and resolve.
 document.addEventListener("click", function (e){
   e.preventDefault();
-  if (e.target.nodeName === "BUTTON"){
+  if ((e.target.nodeName === "BUTTON")&& (e.target.innerText !== "Redo!")){
+
     user = e.target.previousElementSibling.firstElementChild.value
     e.target.parentElement.innerHTML = `<button type="reset">Redo!</button>`
     setUpCards(symbols);
     refreshGame()
+
   }
 })
 
@@ -158,7 +208,16 @@ document.addEventListener("click", function (e){
 
           ++completedCards
           if (cards === completedCards) {
-            messages.innerHTML = `${user}! You win!`
+
+              clearTimeout(t)
+
+
+            newRecord = stopClock.innerHTML.toString()
+
+            timerHeader.style.opacity = 0
+
+
+            messages.innerHTML = `${user}! You win! Your time was ${newRecord}!`
           }
 
           // More often that not, this is the options chosen
