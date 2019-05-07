@@ -30,7 +30,7 @@ function addTime() {
       minutes++;
     }
   }
-  stopClock.innerText = (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds) + "." + (centiseconds > 9 ? centiseconds : "0" + centiseconds);
+  stopClock.innerText = (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds ? (seconds > 9 ? seconds : "0" + seconds) : "00") + "." + (centiseconds > 9 ? centiseconds : "0" + centiseconds);
 
   timer()
 }
@@ -205,13 +205,13 @@ document.addEventListener("click", function (e){
         // If this is the first click after a match, or a failed match
         if (choice === ""){
           // Grabs target, and binds it to the variable clicked to be compared against on later events
-          choice = e.target.dataset.id
-          
+          choice = e.target.parentElement.dataset.id
+
           //Make it opaque
           e.target.style.opacity = 1
 
           // If the 2nd clicked card matches the first clicked card
-        } else if (e.target.dataset.id === choice){
+        } else if (e.target.parentElement.dataset.id === choice){
           // Make it opaque
           e.target.style.opacity = 1
           const chosen = document.getElementsByClassName(choice)
@@ -240,7 +240,7 @@ document.addEventListener("click", function (e){
 
           // More often that not, this is the options chosen
           // This is if the 2nd clicked card does NOT match the 1st clicked card
-        } else if (e.target.dataset.id !== choice){
+        } else if (e.target.parentElement.dataset.id !== choice){
 
          // make it opaque
           e.target.style.opacity = 1
@@ -257,9 +257,10 @@ document.addEventListener("click", function (e){
           // so the user can see the incorrect cards and their positions
           setTimeout(function(){
             //makes all elements transparent
+
             e.target.style.opacity = 0
             Array.from(wrong).forEach(function(choice){
-              choice.style.opacity  = 0
+              choice.firstElementChild.style.opacity  = 0
             })
             //clears the message
             messages.innerHTML = ""
@@ -267,7 +268,7 @@ document.addEventListener("click", function (e){
             doingSomething = ""
 
             // default timer for the setTimeout function is 1000 milliseconds. Will set this to a variable for harder game modes
-          },1000);
+          },500);
 
         }
       }
