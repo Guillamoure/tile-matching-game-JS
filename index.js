@@ -17,7 +17,7 @@ let newRecord = ""
 let centiseconds = 0
 let seconds = 0
 let minutes = 0
-let hours = 0
+
 let t = 0
 
 function addTime() {
@@ -26,16 +26,11 @@ function addTime() {
     centiseconds = 0;
     seconds++;
     if (seconds >= 60){
-      debugger
       seconds = 0;
       minutes++;
-      if (minutes >= 60){
-        minutes = 0;
-        hours++
-      }
     }
   }
-  stopClock.innerText = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds) + "." + (centiseconds > 9 ? centiseconds : "0" + centiseconds);
+  stopClock.innerText = (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds) + "." + (centiseconds > 9 ? centiseconds : "0" + centiseconds);
 
   timer()
 }
@@ -43,6 +38,7 @@ function addTime() {
 function timer() {
 
   t = setTimeout(addTime, 100)
+
 }
 
 
@@ -127,9 +123,12 @@ function refreshGame() {
         centiseconds = 0
         seconds = 0
         minutes = 0
-        hours = 0
-        t = 0
-        timer()
+
+        if (t === 0){
+          timer()
+        } else {
+          t = 0
+        }
         // Decays the opacity of the cards by 1/100th every iteration
       } else if (card.style.opacity > 0) {
         card.style.opacity -= 0.01;
