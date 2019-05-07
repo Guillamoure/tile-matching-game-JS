@@ -32,3 +32,9 @@ body {
 .messages {
   text-align: center;
 }
+
+#clock {
+  position: absolute;
+  right: 5%;
+  /* font-size: 20px; */
+}
