@@ -1,6 +1,6 @@
 //locations
 const tiles = document.getElementById("tile-container")
-const cardText = document.querySelectorAll(".card-text")
+const innerCard = document.querySelectorAll(".pic")
 const gameContent = document.querySelector(".memory-game")
 const messages = document.querySelector(".messages")
 const stopClock = document.getElementById("stop-clock")
@@ -62,17 +62,23 @@ function shuffle(array) {
     return array;
 }
 
+
+
 //sample array for testing
 let symbols = ["Heart", "Heart", "Jupiter", "Jupiter", "Io", "Io", "Klaus", "Klaus", "Sunshine", "Sunshine", "Rocket", "Rocket"]
 
 //executes the shuffle function on the collected array, resets the tiles HTML, and iterates over the new array and slaps it on the DOM
 function setUpCards(array){
-  let shuffled = shuffle(symbols)
+  let doubleArray = [...array, ...array]
+  let shuffled = shuffle(doubleArray)
   cards = (shuffled.length) / 2
   tiles.innerHTML = ""
   //shuffle array
-  shuffled.forEach(function(sym){
-    tiles.innerHTML += `<span class="cards ${sym}" data-id="${sym}"><span class="card-text" style="opacity: 1">${sym}</span></span>`
+  shuffled.forEach(function(img){
+    tiles.innerHTML += `
+    <span class="cards ${img.name}" data-id="${img.name}">
+      <img class="pic" src=${img.img_url} style="opacity: 1">
+    </span>`
   })
   //slap it on the DOM
 }
@@ -83,7 +89,7 @@ function setUpCards(array){
 
 //begins every start of the game
 function refreshGame() {
-  const cardText = document.querySelectorAll(".card-text")
+  const innerCard = document.querySelectorAll(".pic")
 
   //prevents click events
   doingSomething = "yes"
@@ -94,10 +100,10 @@ function refreshGame() {
   //this constant is used to measure how many times the below function should loop
   // Default is to decay the opacity of all of the elements twice, to give a user a chance to see what is on the screen
   // Since the length of the array is not set, this will let the loop run twice
-  const double = (2 * cardText.length) - 1
+  const double = (2 * innerCard.length) - 1
 
   // Loop setInterval function that decays the opacity of all of the elements within the spans
-  cardText.forEach(function(card){
+  innerCard.forEach(function(card){
     var fadeEffect = setInterval(function () {
       //if we do not have an opacity set on the elements, this gives it one
       //NOTE this is a vestige from the stack overflow that we got this from
@@ -155,8 +161,15 @@ document.addEventListener("click", function (e){
   if (e.target.innerText === "Redo!"){
 
     stopClock.innerHTML = ``
-    setUpCards(symbols);
-    refreshGame()
+
+    fetch("http://localhost:3000/api/v1/images")
+    .then(res => res.json())
+    .then(function(images) {
+
+      setUpCards(images);
+      refreshGame()
+    })
+
   }
 })
 
@@ -169,8 +182,14 @@ document.addEventListener("click", function (e){
 
     user = e.target.previousElementSibling.firstElementChild.value
     e.target.parentElement.innerHTML = `<button type="reset">Redo!</button>`
-    setUpCards(symbols);
-    refreshGame()
+    fetch("http://localhost:3000/api/v1/images")
+    .then(res => res.json())
+    .then(function(images) {
+
+      console.log(images)
+      setUpCards(images);
+      refreshGame()
+    })
 
   }
 })
@@ -181,20 +200,20 @@ document.addEventListener("click", function (e){
   document.addEventListener("click", function(e){
     // Prevents this event from occurring if doingSomething is set to a variable
     if (doingSomething === ""){
-
       // prevents clicking on a tile that is already clicked
-      if ((e.target.nodeName === "SPAN") && (e.target.firstElementChild.style.opacity !== "1")){
+      if ((e.target.nodeName === "IMG") && (e.target.style.opacity !== "1")){
         // If this is the first click after a match, or a failed match
         if (choice === ""){
           // Grabs target, and binds it to the variable clicked to be compared against on later events
           choice = e.target.dataset.id
+          
           //Make it opaque
-          e.target.firstElementChild.style.opacity = 1
+          e.target.style.opacity = 1
 
           // If the 2nd clicked card matches the first clicked card
         } else if (e.target.dataset.id === choice){
           // Make it opaque
-          e.target.firstElementChild.style.opacity = 1
+          e.target.style.opacity = 1
           const chosen = document.getElementsByClassName(choice)
           // Turn both of them red
           // NOTE this is a vestige from before we got the backend working
@@ -224,7 +243,7 @@ document.addEventListener("click", function (e){
         } else if (e.target.dataset.id !== choice){
 
          // make it opaque
-          e.target.firstElementChild.style.opacity = 1
+          e.target.style.opacity = 1
           // Find the cards that are wrong
           // NOTE this is a flawed system. This finds ALL elements that share the name of the already chosen card
           const wrong = document.getElementsByClassName(choice)
@@ -238,9 +257,9 @@ document.addEventListener("click", function (e){
           // so the user can see the incorrect cards and their positions
           setTimeout(function(){
             //makes all elements transparent
-            e.target.firstElementChild.style.opacity = 0
+            e.target.style.opacity = 0
             Array.from(wrong).forEach(function(choice){
-              choice.firstElementChild.style.opacity  = 0
+              choice.style.opacity  = 0
             })
             //clears the message
             messages.innerHTML = ""
