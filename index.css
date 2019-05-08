@@ -2,15 +2,22 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  background-color: #b87333;
 }
 
 .cards {
   border-style: solid;
   border-color: blue;
-  width: 20%;
+  /* position: relative;
+  width: 22%;
   height: 10em;
+  margin: 1em; */
+  width: 10em;
+  height: 14em;
   margin: 1em;
-  text-align: center;
+  position: relative;
+  transform-style: preserve-3d;
+  /* transition: transform .5s; */
 
   /* padding: 100px 50px;
   bottom: 2em; */
@@ -25,8 +32,12 @@ body {
 }
 
 #tile-container {
+
+  margin: auto;
   display: flex;
   flex-wrap: wrap;
+  perspective: 1000px;
+
 }
 
 .messages {
@@ -39,7 +50,19 @@ body {
   /* font-size: 20px; */
 }
 
-.pic {
+.pic-front,
+.pic-back {
+  object-fit: cover;
+  position: absolute;
   width: 100%;
   height: 100%;
+  backface-visibility: hidden;
 }
+
+.flip {
+  transform: rotateY(180deg);
+}
+
+/* .pic-front {
+  transform: rotateY(180deg);
+} */
