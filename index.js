@@ -5,6 +5,7 @@ const gameContent = document.querySelector(".memory-game")
 const messages = document.querySelector(".messages")
 const stopClock = document.getElementById("stop-clock")
 const timerHeader = document.querySelector("h2")
+const newPlayerForm = document.querySelector('#form')
 const allCards = document.querySelectorAll(".cards")
 
 //variables
@@ -68,6 +69,16 @@ function shuffle(array) {
     return array;
 }
 
+function makeNewPlayer(player) {
+ let data = player.value
+ fetch(`http://localhost:3000/api/v1/users`, {
+    method: 'POST',
+    body: JSON.stringify({name: data}),
+    headers:{
+      'Content-Type': 'application/json'
+    }
+  })
+}
 
 
 //sample array for testing
@@ -220,6 +231,8 @@ document.addEventListener("click", function (e){
         difficulty = 2
     }
 
+    makeNewPlayer(player)
+
     e.target.parentElement.innerHTML = `<button type="reset">Redo!</button>`
     fetch("http://localhost:3000/api/v1/images")
     .then(res => res.json())
@@ -313,7 +326,7 @@ document.addEventListener("click", function (e){
             e.target.classList.remove("flip")
             // e.target.style.opacity = 0
             Array.from(wrong).forEach(function(choice){
-              
+
               choice.lastElementChild.classList.remove("flip")
             })
             //clears the message
