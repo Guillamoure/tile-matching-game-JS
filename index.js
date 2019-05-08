@@ -16,6 +16,7 @@ let difficulty = 0
 let cards = 0
 let completedCards = 0
 let newRecord = ""
+let playerObj;
 
 let start
 let end
@@ -25,6 +26,8 @@ let seconds = 0
 let minutes = 0
 
 let t = 0
+
+
 
 function addTime() {
   centiseconds++;
@@ -69,16 +72,49 @@ function shuffle(array) {
     return array;
 }
 
+
 function makeNewPlayer(player) {
  let data = player.value
  fetch(`http://localhost:3000/api/v1/users`, {
     method: 'POST',
-    body: JSON.stringify({name: data}),
     headers:{
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+      'accept': 'application/json'
+    },
+    body: JSON.stringify({name: data})
+  })
+  .then(resp => resp.json())
+  .then(function(json){
+    console.log(json)
+    playerObj = json
   })
 }
+
+
+
+function makeNewGame(playerObj, result) {
+ let data = playerObj
+ console.log(data)
+ fetch(`http://localhost:3000/api/v1/games`, {
+    method: 'POST',
+    headers:{
+      'Content-Type': 'application/json',
+      'accept': 'application/json'
+    },
+    body: JSON.stringify({user_id: data.id,
+    score: result,
+    difficulty: difficulty})
+  })
+  .then(resp => resp.json())
+  .then(function(json){
+    console.log(json)
+    let gameScore = json
+    
+  })
+}
+
+
+
 
 
 //sample array for testing
@@ -233,6 +269,7 @@ document.addEventListener("click", function (e){
 
     makeNewPlayer(player)
 
+
     e.target.parentElement.innerHTML = `<button type="reset">Redo!</button>`
     fetch("http://localhost:3000/api/v1/images")
     .then(res => res.json())
@@ -247,6 +284,8 @@ document.addEventListener("click", function (e){
 
   }
 })
+
+
 
 
 
@@ -288,6 +327,12 @@ document.addEventListener("click", function (e){
 
             end = new Date()
             let result = timeFinder(start, end)
+
+            ///CALL CREATEGAME FUNCTION
+
+            makeNewGame(playerObj, result)
+
+
 
               clearInterval(t)
 
