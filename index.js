@@ -14,6 +14,9 @@ let cards = 0
 let completedCards = 0
 let newRecord = ""
 
+let start
+let end
+
 let centiseconds = 0
 let seconds = 0
 let minutes = 0
@@ -32,12 +35,12 @@ function addTime() {
   }
   stopClock.innerText = (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds ? (seconds > 9 ? seconds : "0" + seconds) : "00") + "." + (centiseconds > 9 ? centiseconds : "0" + centiseconds);
 
-  timer()
 }
+
 
 function timer() {
 
-  t = setTimeout(addTime, 100)
+  t = setInterval(addTime, 10)
 
 }
 
@@ -101,7 +104,7 @@ function refreshGame() {
   // Default is to decay the opacity of all of the elements twice, to give a user a chance to see what is on the screen
   // Since the length of the array is not set, this will let the loop run twice
   const double = (2 * innerCard.length) - 1
-
+  let counter = 0
   // Loop setInterval function that decays the opacity of all of the elements within the spans
   innerCard.forEach(function(card){
     var fadeEffect = setInterval(function () {
@@ -129,12 +132,14 @@ function refreshGame() {
         centiseconds = 0
         seconds = 0
         minutes = 0
+        counter++
 
-        if (t === 0){
+        if (counter === innerCard.length){
+          start = new Date()
           timer()
-        } else {
-          t = 0
         }
+
+
         // Decays the opacity of the cards by 1/100th every iteration
       } else if (card.style.opacity > 0) {
         card.style.opacity -= 0.01;
@@ -152,7 +157,7 @@ function refreshGame() {
     }, 10);
 
   })//end of opacity Fn
-
+  console.log("yes")
 }
 
 // If the user wants to play the game again
@@ -168,7 +173,9 @@ document.addEventListener("click", function (e){
 
       setUpCards(images);
       refreshGame()
+
     })
+
 
   }
 })
@@ -189,7 +196,9 @@ document.addEventListener("click", function (e){
       console.log(images)
       setUpCards(images);
       refreshGame()
+
     })
+
 
   }
 })
@@ -227,7 +236,10 @@ document.addEventListener("click", function (e){
           ++completedCards
           if (cards === completedCards) {
 
-              clearTimeout(t)
+            end = new Date()
+            let result = timeFinder(start, end)
+
+              clearInterval(t)
 
 
             newRecord = stopClock.innerHTML.toString()
@@ -235,7 +247,7 @@ document.addEventListener("click", function (e){
             timerHeader.style.opacity = 0
 
 
-            messages.innerHTML = `${user}! You win! Your time was ${newRecord}!`
+            messages.innerHTML = `${user}! You win! Your time was ${result}!`
           }
 
           // More often that not, this is the options chosen
@@ -274,3 +286,51 @@ document.addEventListener("click", function (e){
       }
     }
   })
+
+function timeDisplay(start){
+  current = new Date()
+  let currentTime = timeFinder(start, current)
+  stopClock.innerText = currentTime
+}
+
+function timeFinder (start, end){
+  let final = 0
+  let sMin = start.getMinutes()
+  let sSec = start.getSeconds()
+  let sMil = start.getMilliseconds()
+
+  let eMin = end.getMinutes()
+  let eSec = end.getSeconds()
+  let eMil = end.getMilliseconds()
+
+  let diffMin = eMin - sMin
+  let sSM = parseFloat(sSec + "." + sMil).toFixed(3)
+  let eSM = parseFloat(eSec + "." + eMil).toFixed(3)
+  let diffSM = parseFloat((eSM - sSM).toFixed(3))
+
+  if (diffSM < 0 && diffMin === 1) {
+    let negDiff = 60.000 + diffSM
+    if (negDiff < 10.000){
+      final = `00:0${negDiff}`
+    } else {
+      final = `00:${negDiff}`
+    }
+  } else if (diffSM < 0 && diffMin > 1){
+    let negDiff = 60.000 + diffSM
+    if (negDiff < 10.000){
+      final = `0${diffMin - 1}:0${negDiff}`
+    } else {d
+      final = `0${diffMin - 1}:${negDiff}`
+    }
+  } else if (diffSM == 0.000){
+    final = `0${diffMin}:00.000`
+  } else {
+    if (diffSM < 10.000){
+      final = `0${diffMin}:0${diffSM}`
+    } else {
+      final = "0"+ diffMin + ":" + diffSM
+    }
+  }
+
+  return final
+}
