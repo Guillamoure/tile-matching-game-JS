@@ -319,7 +319,7 @@ function timeFinder (start, end){
     let negDiff = 60.000 + diffSM
     if (negDiff < 10.000){
       final = `0${diffMin - 1}:0${negDiff}`
-    } else {d
+    } else {
       final = `0${diffMin - 1}:${negDiff}`
     }
   } else if (diffSM == 0.000){
