@@ -5,6 +5,7 @@ const gameContent = document.querySelector(".memory-game")
 const messages = document.querySelector(".messages")
 const stopClock = document.getElementById("stop-clock")
 const timerHeader = document.querySelector("h2")
+const allCards = document.querySelectorAll(".cards")
 
 //variables
 let choice = ""
@@ -35,6 +36,7 @@ function addTime() {
     }
   }
   stopClock.innerText = (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds ? (seconds > 9 ? seconds : "0" + seconds) : "00") + "." + (centiseconds > 9 ? centiseconds : "0" + centiseconds);
+
 
 }
 
@@ -89,7 +91,7 @@ function setUpCards(array){
   shuffled.forEach(function(img){
     tiles.innerHTML += `
     <span class="cards ${img.name}" data-id="${img.name}">
-      <img class="pic" src=${img.img_url} style="opacity: 1">
+      <img class="pic-front" src=${img.img_url} style="opacity: 1">
     </span>`
   })
   //slap it on the DOM
@@ -101,7 +103,7 @@ function setUpCards(array){
 
 //begins every start of the game
 function refreshGame() {
-  const innerCard = document.querySelectorAll(".pic")
+  const innerCard = document.querySelectorAll(".pic-front")
 
   //prevents click events
   doingSomething = "yes"
@@ -143,9 +145,16 @@ function refreshGame() {
         minutes = 0
         counter++
 
+        card.style.opacity = 1
+
+
+
+        card.parentElement.innerHTML += `<img class="pic-back" src="https://i.pinimg.com/236x/c1/59/b4/c159b4738dae9c9d8d6417228024de8d--playing-card-design-card-card.jpg">`
+
         if (counter === innerCard.length){
           start = new Date()
           timer()
+
         }
 
 
@@ -192,14 +201,25 @@ document.addEventListener("click", function (e){
 // NOTE submit does not work for some reason. Must resolve
 // TODO Both this function and the above funtion runs concurrently. Must specify and resolve.
 document.addEventListener("click", function (e){
-  if ((e.target.value === "Start!")&& (e.target.innerText !== "Redo!")){
+  if ((e.target.dataset.fn === "start")&& (e.target.innerText !== "Redo!")){
     e.preventDefault();
 
     const player = document.getElementById("player")
-    const pairs = document.getElementById("pairs")
-
-    difficulty = parseInt(pairs.value)
     user = player.value
+    switch (e.target.value){
+      case "Easy!":
+        difficulty = 4
+        break;
+      case "Hard!":
+        difficulty = 8
+        break;
+      case "Super Hard!":
+        difficulty = 9
+        break;
+      default:
+        difficulty = 2
+    }
+
     e.target.parentElement.innerHTML = `<button type="reset">Redo!</button>`
     fetch("http://localhost:3000/api/v1/images")
     .then(res => res.json())
@@ -222,19 +242,24 @@ document.addEventListener("click", function (e){
     // Prevents this event from occurring if doingSomething is set to a variable
     if (doingSomething === ""){
       // prevents clicking on a tile that is already clicked
-      if ((e.target.nodeName === "IMG") && (e.target.style.opacity !== "1")){
+      if ((e.target.nodeName === "IMG") && (e.target.className === "pic-back")){
         // If this is the first click after a match, or a failed match
         if (choice === ""){
           // Grabs target, and binds it to the variable clicked to be compared against on later events
+
           choice = e.target.parentElement.dataset.id
 
           //Make it opaque
-          e.target.style.opacity = 1
+          // e.target.style.opacity = 1
+          e.target.classList.toggle("flip")
+
 
           // If the 2nd clicked card matches the first clicked card
         } else if (e.target.parentElement.dataset.id === choice){
           // Make it opaque
-          e.target.style.opacity = 1
+          // e.target.style.opacity = 1
+          e.target.classList.toggle("flip")
+
           const chosen = document.getElementsByClassName(choice)
           // Turn both of them red
           // NOTE this is a vestige from before we got the backend working
@@ -267,7 +292,11 @@ document.addEventListener("click", function (e){
         } else if (e.target.parentElement.dataset.id !== choice){
 
          // make it opaque
-          e.target.style.opacity = 1
+          // e.target.style.opacity = 1
+
+          e.target.classList.toggle("flip")
+
+
           // Find the cards that are wrong
           // NOTE this is a flawed system. This finds ALL elements that share the name of the already chosen card
           const wrong = document.getElementsByClassName(choice)
@@ -281,10 +310,11 @@ document.addEventListener("click", function (e){
           // so the user can see the incorrect cards and their positions
           setTimeout(function(){
             //makes all elements transparent
-
-            e.target.style.opacity = 0
+            e.target.classList.remove("flip")
+            // e.target.style.opacity = 0
             Array.from(wrong).forEach(function(choice){
-              choice.firstElementChild.style.opacity  = 0
+              
+              choice.lastElementChild.classList.remove("flip")
             })
             //clears the message
             messages.innerHTML = ""
@@ -328,7 +358,8 @@ function timeFinder (start, end){
       final = `00:${negDiff}`
     }
   } else if (diffSM < 0 && diffMin > 1){
-    let negDiff = 60.000 + diffSM
+    let negDiff = (60.000 + diffSM).toFixed(3)
+
     if (negDiff < 10.000){
       final = `0${diffMin - 1}:0${negDiff}`
     } else {
@@ -343,6 +374,6 @@ function timeFinder (start, end){
       final = "0"+ diffMin + ":" + diffSM
     }
   }
-  debugger
+
   return final
 }
