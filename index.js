@@ -10,6 +10,7 @@ const timerHeader = document.querySelector("h2")
 let choice = ""
 let doingSomething = ""
 let user = ""
+let difficulty = 0
 let cards = 0
 let completedCards = 0
 let newRecord = ""
@@ -72,7 +73,15 @@ let symbols = ["Heart", "Heart", "Jupiter", "Jupiter", "Io", "Io", "Klaus", "Kla
 
 //executes the shuffle function on the collected array, resets the tiles HTML, and iterates over the new array and slaps it on the DOM
 function setUpCards(array){
-  let doubleArray = [...array, ...array]
+  const allCards = shuffle(array)
+  let selectedCards = []
+  var i;
+  for (i = 0; i < difficulty; i++) {
+    selectedCards.push(allCards[i])
+  }
+
+
+  let doubleArray = [...selectedCards, ...selectedCards]
   let shuffled = shuffle(doubleArray)
   cards = (shuffled.length) / 2
   tiles.innerHTML = ""
@@ -112,7 +121,7 @@ function refreshGame() {
       //NOTE this is a vestige from the stack overflow that we got this from
       if (!card.style.opacity) {
         card.style.opacity = 1;
-        console.log(1)
+
         // This is the last function
         // once the iterator has run its course, it goes to this elseif statement and clears the interval
       } else if (i > double) {
@@ -143,12 +152,12 @@ function refreshGame() {
         // Decays the opacity of the cards by 1/100th every iteration
       } else if (card.style.opacity > 0) {
         card.style.opacity -= 0.01;
-        console.log(2)
+
         // Once an element's opacity hits 0, increment the counter, represented by the variable i
       } else if (card.style.opacity == 0) {
         card.style.opacity = 1;
         i++
-        console.log(4)
+
         // Just in case there is an error, it will clear the interval
         // NOTE this is a vestige from the stack overflow that we got this from
       } else {
@@ -157,7 +166,6 @@ function refreshGame() {
     }, 10);
 
   })//end of opacity Fn
-  console.log("yes")
 }
 
 // If the user wants to play the game again
@@ -184,10 +192,14 @@ document.addEventListener("click", function (e){
 // NOTE submit does not work for some reason. Must resolve
 // TODO Both this function and the above funtion runs concurrently. Must specify and resolve.
 document.addEventListener("click", function (e){
-  e.preventDefault();
-  if ((e.target.nodeName === "BUTTON")&& (e.target.innerText !== "Redo!")){
+  if ((e.target.value === "Start!")&& (e.target.innerText !== "Redo!")){
+    e.preventDefault();
 
-    user = e.target.previousElementSibling.firstElementChild.value
+    const player = document.getElementById("player")
+    const pairs = document.getElementById("pairs")
+
+    difficulty = parseInt(pairs.value)
+    user = player.value
     e.target.parentElement.innerHTML = `<button type="reset">Redo!</button>`
     fetch("http://localhost:3000/api/v1/images")
     .then(res => res.json())
@@ -226,10 +238,10 @@ document.addEventListener("click", function (e){
           const chosen = document.getElementsByClassName(choice)
           // Turn both of them red
           // NOTE this is a vestige from before we got the backend working
-          // Remove or have a separate coditional
-          Array.from(chosen).forEach(function(choice){
-            choice.style.color = "red"
-          })
+          // Remove or have a separate conditional
+          // Array.from(chosen).forEach(function(choice){
+          //   choice.style.color = "red"
+          // })
           // Reset the choice for later clicks
           choice = ""
 
@@ -331,6 +343,6 @@ function timeFinder (start, end){
       final = "0"+ diffMin + ":" + diffSM
     }
   }
-
+  debugger
   return final
 }
