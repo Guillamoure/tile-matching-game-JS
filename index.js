@@ -196,7 +196,7 @@ function refreshGame() {
 
 
 
-        card.parentElement.innerHTML += `<img class="pic-back" src="https://i.pinimg.com/236x/c1/59/b4/c159b4738dae9c9d8d6417228024de8d--playing-card-design-card-card.jpg">`
+        card.parentElement.innerHTML += `<img class="pic-back" src="https://i.pinimg.com/236x/c1/59/b4/c159b4738dae9c9d8d6417228024de8d--playing-card-design-card-card.jpg" style="opacity: 1">`
 
         if (counter === innerCard.length){
           start = new Date()
@@ -261,7 +261,7 @@ document.addEventListener("click", function (e){
         difficulty = 8
         break;
       case "Super Hard!":
-        difficulty = 9
+        difficulty = 10
         break;
       default:
         difficulty = 2
@@ -294,7 +294,7 @@ document.addEventListener("click", function (e){
     // Prevents this event from occurring if doingSomething is set to a variable
     if (doingSomething === ""){
       // prevents clicking on a tile that is already clicked
-      if ((e.target.nodeName === "IMG") && (e.target.className === "pic-back")){
+      if ((e.target.nodeName === "IMG") && (e.target.style.opacity !== "0")){
         // If this is the first click after a match, or a failed match
         if (choice === ""){
           // Grabs target, and binds it to the variable clicked to be compared against on later events
@@ -302,15 +302,37 @@ document.addEventListener("click", function (e){
           choice = e.target.parentElement.dataset.id
 
           //Make it opaque
-          // e.target.style.opacity = 1
-          e.target.classList.toggle("flip")
+          // e.target.classList.add("flip")
+          let first = setInterval(function(){
+
+            if (e.target.style.opacity === "0"){
+
+              clearInterval(first)
+            } else if (e.target.style.opacity < 0){
+              e.target.style.opacity = 0
+            } else {
+              e.target.style.opacity -= 0.03;
+            }
+          }, 1)
+
 
 
           // If the 2nd clicked card matches the first clicked card
         } else if (e.target.parentElement.dataset.id === choice){
           // Make it opaque
           // e.target.style.opacity = 1
-          e.target.classList.toggle("flip")
+          // e.target.classList.add("flip")
+
+          let last = setInterval(function(){
+            if (e.target.style.opacity === "0"){
+
+              clearInterval(last)
+            } else if (e.target.style.opacity < 0){
+              e.target.style.opacity = 0
+            } else {
+              e.target.style.opacity -= 0.03;
+            }
+          }, 1)
 
           const chosen = document.getElementsByClassName(choice)
           // Turn both of them red
@@ -352,13 +374,23 @@ document.addEventListener("click", function (e){
          // make it opaque
           // e.target.style.opacity = 1
 
-          e.target.classList.toggle("flip")
+          // e.target.classList.toggle("flip")
+
+          let last = setInterval(function(){
+            if (e.target.style.opacity === "0"){
+              clearInterval(last)
+            } else if (e.target.style.opacity < 0){
+              e.target.style.opacity = 0
+            } else {
+              e.target.style.opacity -= 0.03;
+            }
+          }, 1)
 
 
           // Find the cards that are wrong
           // NOTE this is a flawed system. This finds ALL elements that share the name of the already chosen card
           const wrong = document.getElementsByClassName(choice)
-          messages.innerHTML = "These do not match"
+          // messages.innerHTML = "These do not match"
 
           //resets the choice option, since it is saved in the wrong variable
           choice = ""
@@ -368,11 +400,14 @@ document.addEventListener("click", function (e){
           // so the user can see the incorrect cards and their positions
           setTimeout(function(){
             //makes all elements transparent
-            e.target.classList.remove("flip")
+            // e.target.classList.remove("flip")
+            e.target.style.opacity = 1
+
             // e.target.style.opacity = 0
             Array.from(wrong).forEach(function(choice){
 
-              choice.lastElementChild.classList.remove("flip")
+              // choice.lastElementChild.classList.remove("flip")
+              choice.lastElementChild.style.opacity = 1
             })
             //clears the message
             messages.innerHTML = ""
@@ -409,7 +444,8 @@ function timeFinder (start, end){
   let diffSM = parseFloat((eSM - sSM).toFixed(3))
 
   if (diffSM < 0 && diffMin === 1) {
-    let negDiff = 60.000 + diffSM
+    let negDiff = (60.000 + diffSM).toFixed(3)
+
     if (negDiff < 10.000){
       final = `00:0${negDiff}`
     } else {
@@ -417,7 +453,7 @@ function timeFinder (start, end){
     }
   } else if (diffSM < 0 && diffMin > 1){
     let negDiff = (60.000 + diffSM).toFixed(3)
-
+    debugger
     if (negDiff < 10.000){
       final = `0${diffMin - 1}:0${negDiff}`
     } else {
