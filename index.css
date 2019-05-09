@@ -8,6 +8,9 @@
 #form {
   margin: 0 0 2em 2em;
   font-family: 'Stylish', sans-serif;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
 }
 
 #player {
@@ -56,11 +59,6 @@ body {
 
 }
 
-.messages {
-  text-align: center;
-
-  margin: 2em;
-}
 
 #clock {
   position: absolute;
@@ -85,6 +83,8 @@ body {
   display: flex;
   flex-wrap: wrap;
   font-family: 'Stylish', sans-serif;
+  align-items: center;
+  justify-content: center;
 
 }
 
@@ -94,7 +94,6 @@ body {
   text-align: left;
   border-style: groove;
   border-color: #197278;
-
 }
 
 .messages span, .messages span div, .messages span h4 {

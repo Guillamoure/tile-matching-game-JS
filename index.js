@@ -74,7 +74,13 @@ function shuffle(array) {
 
 
 function makeNewPlayer(player) {
- let data = player.value
+  let data
+  if (player.value === ""){
+    data = "Anon"
+  } else {
+    data = player.value
+  }
+
  fetch(`http://localhost:3000/api/v1/users`, {
     method: 'POST',
     headers:{
@@ -309,7 +315,11 @@ document.addEventListener("click", function (e){
     e.preventDefault();
 
     const player = document.getElementById("player")
-    user = player.value
+    if (player.value === ""){
+      user = "Anon"
+    } else {
+      user = player.value
+    }
     switch (e.target.value){
       case "Easy!":
         difficulty = 4
