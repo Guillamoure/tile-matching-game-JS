@@ -337,7 +337,7 @@ document.addEventListener("click", function (e){
     makeNewPlayer(player)
 
 
-    e.target.parentElement.innerHTML = `<button type="reset">Redo!</button>`
+    e.target.parentElement.parentElement.innerHTML = `<button class="btn reset" type="reset">Redo!</button>`
     fetch("http://localhost:3000/api/v1/images")
     .then(res => res.json())
     .then(function(images) {
