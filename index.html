@@ -4,31 +4,32 @@
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="index.css">
     <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Stylish" rel="stylesheet">
   </head>
   <body>
-    <div class="">
-      memory
+    <div class="title">
+      memorie
       <br>
-      ---------|
     </div>
       <section class= 'memory-game'>
         <div class="start">
           <form id="form">
-            <!-- <label># of Pairs: <input type="number" name="number" id="pairs"></label><br> -->
-            <label style="font-size: 30px">Name: <input type="text" name="name" id="player"></label><br>
 
-            <input type="submit" data-fn="start" value="Easy!"></input>
-            <input type="submit" data-fn="start" value="Hard!"></input>
-            <input type="submit" data-fn="start" value="Super Hard!"></input>
+            <label for="player" style="font-size: 30px">player </label>
+            <input type="text" name="name" id="player"><br>
+
+            <input type="submit" data-fn="start" value="Easy!" style="font-family: 'Stylish', sans-serif"></input>
+            <input type="submit" data-fn="start" value="Hard!" style="font-family: 'Stylish', sans-serif"></input>
+            <input type="submit" data-fn="start" value="Super Hard!" style="font-family: 'Stylish', sans-serif"></input>
           </form>
+          <h2 id="stop-clock"</h2>
         </div>
-        <h2><p id="stop-clock"></p></h2>
-        <div class="messages"></div>
+        <span class="messages"></span>
           <div id="tile-container">
               <img class= 'front-face' src='' />
           </div>
       </section>
-      <div class="">
+      <div class="creation-team" style="font-family: 'Stylish', sans-serif;">
         <br>
         <br>
         Brought to you by Team Sexii (c)
