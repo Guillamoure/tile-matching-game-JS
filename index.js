@@ -127,7 +127,7 @@ function getUserNames(){
 function leaderboard(title, cards, games, json){
   let easy = grabDifficulty(games, cards)
   let sortEasy = easy.sort(compare)
-  messages.innerHTML += `<span id="${title}-leaderboard"></span> <br class="clear" />;`
+  messages.innerHTML += `<span id="${title}-leaderboard"></span> <br class="clear" />`
   const leaderSpan = document.getElementById(`${title}-leaderboard`)
   leaderSpan.innerHTML = `<h4>Leaderboard: ${title}</h4>`
   let i
@@ -250,7 +250,10 @@ function refreshGame() {
         doingSomething = ""
         messages.innerHTML = ""
         timerHeader.style.opacity = 1
-        timerHeader.style.color = "rgba(120, 209, 38, 0.38)";
+        timerHeader.style.color = "#888";
+        // timerHeader.style.color = "rgba(120, 209, 38, 0.38)";
+        // green color, instead made it grey
+        timerHeader.style.fontFamily = "'Orbitron', sans-serif;"
     /* color: green; */
 
 
@@ -336,7 +339,7 @@ document.addEventListener("click", function (e){
         difficulty = 8
         break;
       case "Super Hard!":
-        difficulty = 10
+        difficulty = 12
         break;
       default:
         difficulty = 2
