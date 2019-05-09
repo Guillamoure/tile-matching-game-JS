@@ -14,12 +14,29 @@
 
 #player {
   margin-bottom: 1em;
+  border-radius: 2em;
+  border-color: #2C75FF;
+  background: transparent none;
+  box-shadow: .1em .1em #fff;
+  padding-left: 1.5em;
+  color: #fff;
+  font-family: 'Stylish', sans-serif;
+  text-shadow: .1em .1em #2C75FF;
+  height: 2.5em;
+  width: 15em;
+  font-size: 100%;
+}
+
+#player:focus {
+  outline: transparent;
 }
 
 .title {
   font-size: 50px;
   text-align: center;
   font-family: 'Stylish', sans-serif;
+  text-shadow: .1em .1em #2C75FF;
+  color: #fff;
 }
 
 .cards {
@@ -97,19 +114,30 @@ body {
   font-family: 'Stylish', sans-serif;
   align-items: center;
   justify-content: center;
-
+  font-size: 1000;
+  text-shadow: .1em .1em #2C75FF;
+  color: #fff;
 }
+
+
+
 
 .messages span {
   margin: 1em;
   padding: 1em;
   text-align: left;
   border-style: groove;
-  border-color: #197278;
+  border-color: #0892D0;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: .25em .25em #888888;
+  border-radius: .3em;
+  top: 0;
 }
 
 .messages span, .messages span div, .messages span h4 {
-  background-color: #bf7336;
+  font-size: 1000;
+  text-shadow: .1em .1em #2C75FF;
+  color: #fff;
 
 }
 
@@ -126,6 +154,71 @@ h2 {
   bottom: 1em;
   margin-left: 1.5em;
 }
+.difficulty {
+
+  align-content: center;
+  justify-content: center;
+}
+
+.btn {
+  background: transparent none;
+  font-size: 1em;
+  font-weight: 700;
+  display: inline-block;
+  margin: 0 .25em 0 0;
+  padding: .78571429em 1.5em .78571429em;
+  line-height: 1em;
+  border-radius: .3em;
+}
+
+.reset {
+  color: #fffb96;
+  border-color: #fffb96;
+  box-shadow: .25em .25em #666;
+}
+
+.reset:hover{
+  color: #666;
+  background: #fffb96;
+}
+
+.easy {
+  color: #00ff9f;
+  border-color: #00ff9f;
+  box-shadow: .25em .25em #888888;
+}
+
+.easy:hover {
+  color: #fff;
+  background: #00ff9f;
+}
+
+/* .easy:active {
+  background-color: rgba(0, 255, 159, 0.7);
+} */
+
+.hard {
+  color: #00b8ff;
+  border-color: #00b8ff;
+  box-shadow: .25em .25em #888888;
+}
+
+.hard:hover {
+  color: #fff;
+  background: #00b8ff;
+}
+
+.super {
+  color: #bd00ff;
+  border-color: #bd00ff;
+  box-shadow: .25em .25em #888888;
+}
+.super:hover {
+  color: #fff;
+  background: #bd00ff;
+}
+
+
 
 /* .pic-front {
   transform: rotateY(180deg);
