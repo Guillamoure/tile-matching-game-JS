@@ -18,7 +18,7 @@
   border-color: #2C75FF;
   background: transparent none;
   box-shadow: .1em .1em #fff;
-  padding-left: 1em;
+  padding-left: 1.5em;
   color: #fff;
   font-family: 'Stylish', sans-serif;
   text-shadow: .1em .1em #2C75FF;
@@ -108,7 +108,12 @@ body {
   font-family: 'Stylish', sans-serif;
   align-items: center;
   justify-content: center;
+  font-size: 1000;
+  text-shadow: .1em .1em #2C75FF;
+  color: #fff;
 }
+
+
 
 
 .messages span {
@@ -163,11 +168,11 @@ h2 {
 .reset {
   color: #fffb96;
   border-color: #fffb96;
-  box-shadow: .25em .25em #888888;
+  box-shadow: .25em .25em #666;
 }
 
 .reset:hover{
-  color: #fff;
+  color: #666;
   background: #fffb96;
 }
 
