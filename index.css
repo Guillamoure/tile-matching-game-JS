@@ -72,6 +72,12 @@ body {
   /* font-size: 20px; */
 }
 
+/* #stop-clock.style: {
+  color: rgba(120, 209, 38, 0.38);
+  color: green;
+  opacity: 1;
+} */
+
 .pic-front,
 .pic-back {
   object-fit: cover;
