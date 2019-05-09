@@ -90,11 +90,68 @@ function makeNewPlayer(player) {
   })
 }
 
+function compare(a, b) {
+  const scoreA = a.score
+  const scoreB = b.score
+
+  let comparison = 0;
+  if (scoreA > scoreB) {
+    comparison = 1;
+  } else if (scoreA < scoreB) {
+    comparison = -1;
+  }
+
+  return comparison;
+}
+
+function grabDifficulty(arr, difficulty){
+  return arr.filter(obj => obj.difficulty === difficulty)
+}
+
+function getUserNames(){
+  fetch(`http://localhost:3000/api/v1/users`)
+  .then(res => res.json())
+  .then(console.log)
+}
+
+function leaderboard(title, cards, games, json){
+  let easy = grabDifficulty(games, cards)
+  let sortEasy = easy.sort(compare)
+  messages.innerHTML += `<span id="${title}-leaderboard"></span>`
+  const leaderSpan = document.getElementById(`${title}-leaderboard`)
+  leaderSpan.innerHTML = `<h4>Leaderboard: ${title}</h4>`
+  let i
+  let stoppingPoint = sortEasy.length < 6 ? sortEasy.length : 5
+
+  for (i = 0; i < stoppingPoint; i++){
+  let obj = sortEasy[i]
+    let userObj = json.data.find(function(el){
+
+
+      return el.id == obj["user-id"]
+    })
+    leaderSpan.innerHTML += `<div> ${obj.score} | ${userObj.attributes.name}</div>`
+  }
+}
+
+function getHighScore() {
+  fetch(`http://localhost:3000/api/v1/users`)
+  .then(res => res.json())
+  .then(function(json){
+    let games = (json.data.map(el => el.relationships.games.data)).flat()
+    leaderboard("Easy", "4", games, json)
+    leaderboard("Hard", "8", games, json)
+    leaderboard("Super Hard", "10", games, json)
+  })
+}
+getHighScore()
+
 
 
 function makeNewGame(playerObj, result) {
- let data = playerObj
+ let data = playerObj.data
  console.log(data)
+
  fetch(`http://localhost:3000/api/v1/games`, {
     method: 'POST',
     headers:{
@@ -109,7 +166,7 @@ function makeNewGame(playerObj, result) {
   .then(function(json){
     console.log(json)
     let gameScore = json
-    
+
   })
 }
 
