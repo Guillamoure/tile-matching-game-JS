@@ -8,6 +8,10 @@ const timerHeader = document.querySelector("h2")
 const newPlayerForm = document.querySelector('#form')
 const allCards = document.querySelectorAll(".cards")
 
+
+
+
+
 //variables
 let choice = ""
 let doingSomething = ""
@@ -123,7 +127,7 @@ function getUserNames(){
 function leaderboard(title, cards, games, json){
   let easy = grabDifficulty(games, cards)
   let sortEasy = easy.sort(compare)
-  messages.innerHTML += `<span id="${title}-leaderboard"></span>`
+  messages.innerHTML += `<span id="${title}-leaderboard"></span> <br class="clear" />;`
   const leaderSpan = document.getElementById(`${title}-leaderboard`)
   leaderSpan.innerHTML = `<h4>Leaderboard: ${title}</h4>`
   let i
@@ -246,6 +250,10 @@ function refreshGame() {
         doingSomething = ""
         messages.innerHTML = ""
         timerHeader.style.opacity = 1
+        timerHeader.style.color = "rgba(120, 209, 38, 0.38)";
+    /* color: green; */
+
+
 
         completedCards = 0
         newRecord = ""
@@ -259,7 +267,7 @@ function refreshGame() {
 
 
 
-        card.parentElement.innerHTML += `<img class="pic-back" src="https://i.pinimg.com/236x/c1/59/b4/c159b4738dae9c9d8d6417228024de8d--playing-card-design-card-card.jpg" style="opacity: 1">`
+        card.parentElement.innerHTML += `<img class="pic-back" src="images/cardback.png" style="opacity: 1">`
 
         if (counter === innerCard.length){
           start = new Date()
