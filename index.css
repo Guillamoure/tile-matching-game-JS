@@ -2,12 +2,27 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  background-color: #b87333;
+  background-color: #b47333;
+}
+
+#form {
+  margin: 0 0 2em 2em;
+  font-family: 'Stylish', sans-serif;
+}
+
+#player {
+  margin-bottom: 1em;
+}
+
+.title {
+  font-size: 50px;
+  text-align: center;
+  font-family: 'Stylish', sans-serif;
 }
 
 .cards {
   border-style: solid;
-  border-color: blue;
+  border-color: #197278;
   /* position: relative;
   width: 22%;
   height: 10em;
@@ -25,7 +40,7 @@
 }
 
 body {
-  margin-top: 5em;
+  margin-top: 2em;
   padding: 0;
   font-family: sans-serif;
   height: 100vh;
@@ -43,6 +58,8 @@ body {
 
 .messages {
   text-align: center;
+
+  margin: 2em;
 }
 
 #clock {
@@ -62,6 +79,41 @@ body {
 
 .flip {
   transform: rotateY(180deg);
+}
+
+.messages {
+  display: flex;
+  flex-wrap: wrap;
+  font-family: 'Stylish', sans-serif;
+
+}
+
+.messages span {
+  margin: 1em;
+  padding: 1em;
+  text-align: left;
+  border-style: groove;
+  border-color: #197278;
+
+}
+
+.messages span, .messages span div, .messages span h4 {
+  background-color: #bf7336;
+
+}
+
+.start {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+h2 {
+  margin-left: 2em;
+}
+
+.creation-team {
+  bottom: 1em;
+  margin-left: 1.5em;
 }
 
 /* .pic-front {

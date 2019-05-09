@@ -285,7 +285,7 @@ function refreshGame() {
 document.addEventListener("click", function (e){
   e.preventDefault()
   if (e.target.innerText === "Redo!"){
-
+    clearInterval(t)
     stopClock.innerHTML = ``
 
     fetch("http://localhost:3000/api/v1/images")
