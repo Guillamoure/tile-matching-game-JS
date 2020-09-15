@@ -4,6 +4,7 @@ Using vanilla JavaScript, I built a memory card game in four days with a partner
 
 ## [Video Demo](https://youtu.be/7o0TBLn79EQ)
 
+![Memorie-Gameplay](/images/memorie-easy.gif)
 
 # Getting Started 
 Clone github repo in terminal and open up in your favorite text editor. Make sure you have Rails installed because the backend if fully Rails and you will need it in order to access the database!
